@@ -12,7 +12,7 @@ while sqrc * sqrc <= maxn:
             a = m * m - n * n
             b = 2 * m * n
             if (a * b // 2) % 84 != 0:
-                nsp += 1
+                notsp += 1
 #             print(a, b, c)
         m += 1
     sqrc += 1
