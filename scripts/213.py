@@ -1,7 +1,7 @@
 from decimal import *
 
-size = 30
-steps = 50
+size = 10
+steps = 5
 
 def step(grid):
     new_grid = [[Decimal(0) for _ in range(size)] for _ in range(size)]
@@ -39,5 +39,7 @@ for i in range(size):
         for y in range(size):
             for x in range(size):
                 base_p *= Decimal(1) - probs[y][x][i][q]
+        print(round(base_p, 5), end=' ')
         ev += base_p
+    print()
 print(ev)
