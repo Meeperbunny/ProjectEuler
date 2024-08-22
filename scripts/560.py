@@ -1,17 +1,40 @@
+def xormul(a, b, c, mod):
+    m = len(a)
+    
+    if m == 1:
+        c[0] = a[0] * b[0] % mod
+        return
+    
+    inv2 = pow(2, mod - 2, mod)  # Modular multiplicative inverse of 2 under mod
+    
+    ap, bp, an, bn = [], [], [], []
+    mdiv = m // 2
+    for i in range(mdiv):
+        ap.append((a[i] + a[i + mdiv]) % mod)
+        an.append((a[i] - a[i + mdiv] + mod) % mod)
+    
+    d0 = [0] * (mdiv)
+    d1 = [0] * (mdiv)
+    
+    xormul(ap, ap, d0, mod)
+    xormul(an, an, d1, mod)
+    
+    for i in range(mdiv):
+        c[i] = (d0[i] + d1[i]) * inv2 % mod
+        c[i + mdiv] = (d0[i] - d1[i] + mod) * inv2 % mod
+
 from math import log2
 
-n = 10000000
-m = 10000000
+n = 10**7
+m = 10**7
 mod = int(1e9 + 7)
 nimber_size = int(log2(n) + 1)
-n, nimber_size
+n, m, nimber_size
 
 from collections import Counter
 
-nimbers = [Counter() for _ in range(nimber_size)]
+nimbers = [[0 for  _ in range(2**nimber_size)] for _ in range(nimber_size)]
 nimbers[0][1] = 1
-
-print("Sieving")
 
 s = [1 for _ in range(n)]
 nimber = 1
@@ -20,35 +43,25 @@ for q in range(2, n):
         for i in range(q, n, q):
             if s[i]:
                 if q == 2:
-                    # print(i, 0)
                     nimbers[0][0] += 1
                 else:
-                    # print(i, nimber)
                     nimbers[0][nimber] += 1
             s[i] = 0
         nimber += 1
 
-print("Splitting")
-
 for i in range(1, nimber_size):
-    for ind, e in enumerate(nimbers[i - 1]):
-        if ind % (len(nimbers[i - 1]) // 10000) == 0:
-            print(ind / len(nimbers[i - 1]) / nimber_size)
-        for q in nimbers[i - 1]:
-            nimbers[i][e ^ q] = (nimbers[i][e ^ q] + nimbers[i - 1][e] * nimbers[i - 1][q]) % mod
+    print(i)
+    xormul(nimbers[i - 1], nimbers[i - 1], nimbers[i], mod)
 
-print("Decomposing")
-
-base = Counter([0])
-left = m
+base = nimbers[0]
+left = m - 1
 for i in range(nimber_size - 1, -1, -1):
     take = 1 << i
     while take <= left:
         left -= take
         print("Taking", take)
-        new_base = Counter()
-        for e in base:
-            for q in nimbers[i]:
-                new_base[e ^ q] = (new_base[e ^ q] + base[e] * nimbers[i][q]) % mod
-        base = new_base
+        res = [0 for  _ in range(2**nimber_size)]
+        xormul(base, nimbers[i], res, mod)
+        base = res.copy()
+# print(base)
 print(base[0] % mod)
