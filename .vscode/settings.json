@@ -1,6 +1,14 @@
 {
     "files.associations": {
         "ostream": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "utility": "cpp",
+        "vector": "cpp",
+        "cmath": "cpp",
+        "bitset": "cpp",
+        "set": "cpp",
+        "tuple": "cpp",
+        "iomanip": "cpp",
+        "ios": "cpp"
     }
 }
