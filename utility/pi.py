@@ -13,3 +13,18 @@ def prime_count(n):
     for i in range(1, n + 1):
         pi[i] = pi[i - 1] + s[i]
     return pi
+
+def pi(n):
+    r = int(n ** 0.5)
+    assert r * r <= n and (r + 1) ** 2 > n
+    V = [n // i for i in range(1, r + 1)]
+    V += list(range(V[-1] - 1, 0, -1))
+    D = {v: v - 1 for v in V}
+    for p in range(2, r + 1):
+        if D[p] > D[p - 1]:  # this indicates that p is prime
+            # For each v in V with v >= p*p, update D[v]
+            for v in V:
+                if v < p * p:
+                    break
+                D[v] -= D[v // p] - D[p - 1]
+    return D[n]
