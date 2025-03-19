@@ -27,7 +27,7 @@ def S(n, mod=None):
         ans = (ans % mod + mod) % mod
     return ans
 
-N = 10**6
+N = 10**11
 M = int(1e9+7)
 t = 0
 k = 1
