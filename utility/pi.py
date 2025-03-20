@@ -21,10 +21,22 @@ def pi(n):
     V += list(range(V[-1] - 1, 0, -1))
     D = {v: v - 1 for v in V}
     for p in range(2, r + 1):
-        if D[p] > D[p - 1]:  # this indicates that p is prime
-            # For each v in V with v >= p*p, update D[v]
+        if D[p] > D[p - 1]:
             for v in V:
                 if v < p * p:
                     break
                 D[v] -= D[v // p] - D[p - 1]
     return D[n]
+
+# Base recurrence for Lucy Hedgehog
+@cache
+def S(v, p):
+    if p <= 1:
+        return v - 1
+    if p not in pset:
+        return S(v, p - 1)
+    if p * p > v:
+        return S(v, p - 1)
+    return S(v, p - 1) - (S(v // p, p - 1) - S(p - 1, p - 1))
+def PI(N):
+    return S(N, int(N**0.5))
