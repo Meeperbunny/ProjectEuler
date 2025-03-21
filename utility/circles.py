@@ -3,6 +3,7 @@
 def find_internal_curvature(k_1, k_2, k_3):
     first = k_1 + k_2 + k_3
     second = k_1 * k_2 + k_2 * k_3 + k_3 * k_1
+    
     k_ans_1, k_ans_2 = first + 2 * second**0.5, first - 2 * second**0.5
     return k_ans_1 #k_ans_2 # Empirically don't use the second answer. Unsure when it is useful
 
