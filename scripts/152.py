@@ -1,97 +1,158 @@
-import itertools
-
-maxn = 52
-
-def gen_primes(n):
-    sieve = [1 for _ in range(n + 1)]
-    primes = []
-    for i in range(2, n + 1):
-        if sieve[i]:
-            primes.append(i)
-            for q in range(2 * i, n + 1, i):
-                sieve[q] = 0
-    return primes
-
-primes = gen_primes(maxn)
-primes
-
-def get_groups(p, n, plist):
-    cands = list(range(p, n + 1, p))
-    cands = [e for e in cands if e in plist]
-    valid_cands = []
-    for n_g in range(2, len(cands) + 1):
-        for cand in itertools.combinations(cands, n_g):
-            n, d = 0, 1
-            for el in cand:
-                n = d + el * el * n
-                d = d * el * el
-            if n % pow(p, 2 * len(cand)) == 0:
-                # print(n, d, cand)
-                valid_cands.append(cand)
-    return valid_cands
-
-g = {}
-n_list = list(range(2, maxn + 1))
-
-fnd = False
-
-# for p in reversed(primes[1:]):
-    # groups = get_groups(p, maxn, n_list)
-    # g[p] = groups
-    # opr = False
-    # if not len(groups) and not fnd:
-    #     opr = True
-    #     for el in range(p, maxn + 1, p):
-    #         if el in n_list:
-    #             n_list.remove(el)
-    # else:
-    #     opr = False
-    #     fnd = True
-    # print(p, len(groups), opr)
-    # if p * 3 > maxn:
-    #     print(p * 3)
-    #     for el in range(p, maxn + 1, p):
-    #         if el in n_list:
-    #             print(el)
-    #             n_list.remove(el)
-
 from math import lcm
+from fractions import Fraction
+s = [2, 3, 4, 5, 7, 12, 15, 20, 28, 35]
+def pfs(n):
+    pfs = []
+    for i in range(2, n):
+        if i * i > n:
+            break
+        while n % i == 0:
+            n //= i
+            pfs.append(i)
+    if n - 1:
+        pfs.append(n)
+    return pfs
+def get_lpf(i):
+    ps = set(pfs(i))
+    return max(ps)
+def get_spf(i):
+    ps = set(pfs(i))
+    return min(ps)
+s = [2, 3, 4, 6, 7, 9, 12, 15, 28, 30, 35, 36, 45]
+s = [2, 3, 4, 6, 7, 9, 10, 20, 28, 35, 36, 45]
+from fractions import Fraction
+N = 80
+# t = 27
+# N = 45
+t = 25
+s = [i for i in range(3, N + 1)]
+c = {}
+for e in s:
+    # lp = get_spf(e)
+    lp = get_lpf(e)
+    if lp not in c:
+        c[lp] = []
+    c[lp].append(e)
+T = Fraction(0)
+for e, v in c.items():
+    f = Fraction(0)
+    for i in v:
+        f += Fraction(1, i * i)
+    print(e, v, f)
+    T += f
+T
+nums = []
+for e, v in c.items():
+    for k in v:
+        if get_spf(k) <= 13:
+            nums.append(Fraction(1, k * k))
+lc = 1
+for i in nums:
+    lc = lcm(lc, i.denominator)
+
+for i in range(len(nums)):
+    nums[i] = lc * nums[i].numerator // nums[i].denominator
+
+l1 = nums[:t]
+l2 = nums[t:]
+
+
+f = Fraction(0)
+for k in [13, 39, 52]:
+    f += Fraction(1, k * k)
+print(f, f * lc)
+
+print(lc)
+print(l1, l2)
+from tqdm import tqdm
+def gen_cset(l, lc):
+    s = [0]
+    for q, n in enumerate(l):
+        print(q)
+        ssz = len(s)
+        for i in tqdm(range(ssz)):
+            if s[i] + n > lc // 2:
+                continue
+            s.append(s[i] + n)
+    return s
+def fac(n):
+    return 1 if n <= 1 else fac(n - 1) * n
+def binom(n, k):
+    return fac(n) // fac(n - k) // fac(k)
 from collections import Counter
+print("GENERATING")
+ss = None
+ss = Counter(gen_cset(l1, lc))
+# print(len(ss) / pow(2, len(l1)))
+c = 0
+tar = lc // 2 - lc // 4
+from itertools import combinations
+for sz in range(13, len(l2) + 1):
+    # print("checking sz", sz)
+    # for combo in tqdm(combinations(l2, r=sz)):
+    b = binom(len(l2), sz)
+    gen = combinations(l2, r=sz)
+    for _ in tqdm(range(b)):
+        combo = next(gen)
+        comp = tar - sum(combo)
+        if comp in ss:
+            tt = Counter()
+            for e in combo:
+                q = int((lc // e)**0.5)
+                tt[get_lpf(q)] += 1
+                print(q, end=", ")
+            print()
+            print(tt)
+            print()
+            c += ss[comp]
+            print(c)
+print(c)
+    # break
 
-print(n_list)
-
-l_a = 1
-for e in n_list:
-    l_a = lcm(l_a, e * e)
-print(l_a)
-tar = l_a // 2
-
-n_list_f, n_list_s = n_list[:len(n_list)//2], n_list[len(n_list)//2:]
-print(n_list_f, n_list_s)
-
-ways_f, ways_s = Counter(), Counter()
-ways_f[0], ways_s[0] = 1, 1
-
-for i, e in enumerate(n_list_f):
-    print(i, e, len(n_list_f))
-    for b_v in ways_f.copy():
-        cnt = ways_f[b_v]
-        t_a = l_a // (e * e)
-        if (b_v + t_a <= tar):
-            ways_f[b_v + t_a] += cnt
-for i, e in enumerate(n_list_s):
-    print(i, e, len(n_list_s))
-    for b_v in ways_s.copy():
-        cnt = ways_s[b_v]
-        t_a = l_a // (e * e)
-        if (b_v + t_a <= tar):
-            ways_s[b_v + t_a] += cnt
-print("MEETING")
-# MEET IN THE MIDDLE
-tot = 0
-for e in ways_f:
-    cnt_f = ways_f[e]
-    t_s = tar - e
-    cnt_s = ways_s[t_s]
-    tot += cnt_f * cnt_s
-print("Answer:", tot)
+"""
+33it [00:00, ?it/s]
+0
+checking sz 2
+528it [00:00, 263956.20it/s]
+0
+checking sz 3
+5456it [00:00, 79418.50it/s]
+49
+checking sz 4
+40920it [00:00, 2341358.18it/s]
+70
+checking sz 5
+237336it [00:00, 2176885.66it/s]
+81
+checking sz 6
+1107568it [00:00, 2417723.55it/s]
+195
+checking sz 7
+4272048it [00:01, 2489952.45it/s]
+213
+checking sz 8
+13884156it [00:05, 2453990.65it/s]
+225
+checking sz 9
+38567100it [00:16, 2373347.50it/s]
+288
+checking sz 10
+92561040it [00:41, 2248275.96it/s]
+288
+checking sz 11
+193536720it [01:27, 2218552.97it/s]
+288
+checking sz 12
+354817320it [02:44, 2156349.99it/s]
+296
+checking sz 13
+573166440it [04:30, 2116452.72it/s]
+296
+checking sz 14
+818809200it [06:46, 2014030.15it/s]
+296
+checking sz 15
+1037158320it [08:40, 1994339.26it/s]
+296
+checking sz 16
+"""
