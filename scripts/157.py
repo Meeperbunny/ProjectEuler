@@ -1,4 +1,4 @@
-from math import gcd
+nfrom math import gcd
 
 def get_divs(n):
     divs = set()
