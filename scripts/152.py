@@ -29,7 +29,7 @@ s = [i for i in range(3, N + 1)]
 c = {}
 for e in s:
     # lp = get_spf(e)
-    lp = get_lpf(e)
+    # lp = get_lpf(e)
     if lp not in c:
         c[lp] = []
     c[lp].append(e)
