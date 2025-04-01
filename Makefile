@@ -5,7 +5,7 @@ run:
 		echo "Error: No filename provided. Please supply file=<filename>"; \
 		exit 1; \
 	fi
-	@g++ $(file) -g -Wall -Wextra -Wfatal-errors -DIAN_DEBUG -o source.exe -O3 -std=c++2a
+	@g++ $(file) -g -Wall -Wextra -Wfatal-errors -DIAN_DEBUG -o source.exe -O3 -std=c++2a -march=native
 	@./source.exe
 	@rm -f source.exe
 
