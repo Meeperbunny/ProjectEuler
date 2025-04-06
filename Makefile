@@ -1,22 +1,35 @@
 .PHONY: run create
 
+# Detect platform and set compiler
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    CXX := clang++
+else
+    CXX := g++
+endif
+
+# Compiler flags
+CXXFLAGS := -I ~/include -std=c++2a -g -Wall -Wextra -Wfatal-errors -DIAN_DEBUG -O3 -march=native
+
+# Run the provided file: make run file=scripts/208.cc
 run:
 	@if [ -z "$(file)" ]; then \
-		echo "Error: No filename provided. Please supply file=<filename>"; \
+		echo "Error: No filename provided. Use: make run file=<filename>"; \
 		exit 1; \
 	fi
-	@g++ $(file) -g -Wall -Wextra -Wfatal-errors -DIAN_DEBUG -o source.exe -O3 -std=c++2a -march=native
+	@$(CXX) $(CXXFLAGS) $(file) -o source.exe
 	@./source.exe
 	@rm -f source.exe
 
+# Create a new file: make create name=208
 create:
-	@target=$(word 2,$(MAKECMDGOALS)); \
-	if [ -z "$$target" ]; then \
-		echo "Usage: make create <number>"; exit 1; \
-	fi; \
-	cp scripts/template.cc scripts/$$target.cc; \
-	echo "Created scripts/$$target.cc from scripts/template.cc"
+	@if [ -z "$(name)" ]; then \
+		echo "Error: No name provided. Use: make create name=<number>"; \
+		exit 1; \
+	fi
+	@cp scripts/template.cc scripts/$(name).cc
+	@echo "Created scripts/$(name).cc from template."
 
-# Dummy rule to avoid errors with additional arguments
+# Dummy rule to absorb extra args
 %:
 	@:
