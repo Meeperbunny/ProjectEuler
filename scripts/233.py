@@ -1,6 +1,6 @@
 from math import gcd
 from collections import Counter
-maxn = 10**7
+maxn = 38000000
 target = 420
 
 print("Init count")
@@ -11,6 +11,7 @@ prog = 120
 m = 1
 print("Starting Decomp")
 while m * m < maxn:
+    print(m)
     n = 1
     # if m % (int(maxn**0.5) // prog + 1) == 0:
     #     a = m // (int(maxn**0.5) // prog + 1)
@@ -21,9 +22,7 @@ while m * m < maxn:
             b = 2 * m * n
             c = m * m + n * n
             # inc = 2 * c * 10 // gcd(2 * c, 10)
-            inc = 2 * c
-            for q in range(inc, maxn + 1, inc):
-                # print(q, inc, c)
+            for q in range(c, maxn + 1, c):
                 cnt[q] += 8
         n += 1
     m += 1
@@ -33,6 +32,7 @@ tot = 0
 #     print(i, cnt[i])
 
 print("Adding all")
+print("CC", cnt[1328125])
 for i in cnt:
     if cnt[i] + 4 == target:
         tot += i
