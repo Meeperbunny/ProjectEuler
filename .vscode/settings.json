@@ -70,6 +70,24 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "__split_buffer": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "__bit_reference": "cpp",
+        "__verbose_abort": "cpp",
+        "any": "cpp",
+        "barrier": "cpp",
+        "charconv": "cpp",
+        "execution": "cpp",
+        "latch": "cpp",
+        "locale": "cpp",
+        "numbers": "cpp",
+        "optional": "cpp",
+        "print": "cpp",
+        "semaphore": "cpp",
+        "source_location": "cpp",
+        "span": "cpp",
+        "stack": "cpp",
+        "string_view": "cpp",
+        "syncstream": "cpp",
+        "variant": "cpp"
     }
 }
