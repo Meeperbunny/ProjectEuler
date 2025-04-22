@@ -14,7 +14,7 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     
-    long long K = 314159265358;
+    long long K = 3141592653;
 
     long long C = 0;
     for (long long n = 1; n * n < K; ++n) {
