@@ -4,12 +4,20 @@
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
     CXX := clang++
+    VECFLAGS := -ftree-vectorize -funroll-loops
 else
     CXX := g++
+    VECFLAGS := -ftree-vectorize -funroll-loops -mavx2 -mfma -msse4.2
 endif
 
 # Compiler flags
-CXXFLAGS := -I ~/include -std=c++2a -g -Wall -Wextra -Wfatal-errors -DIAN_DEBUG -O3 -march=native
+CXXFLAGS := -I ~/include \
+            -std=c++2a \
+            -g \
+            -Wall -Wextra -Wfatal-errors \
+            -DIAN_DEBUG \
+            -O3 -march=native \
+            $(VECFLAGS)
 
 # Run the provided file: make run file=scripts/208.cc
 run:
