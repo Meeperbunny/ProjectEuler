@@ -7,3 +7,11 @@ def factorial(n):
 @cache
 def binom(n, k):
     return factorial(n) // factorial(k) // factorial(n - k)
+
+@cache
+def multi(t):
+    s = sum(t)
+    b = 1
+    for e in t:
+        b *= factorial(e)
+    return factorial(s) // b

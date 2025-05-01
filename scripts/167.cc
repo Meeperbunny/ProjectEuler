@@ -53,17 +53,17 @@ struct _mint {
     }
  
     static unsigned fast_mod(uint64_t x, unsigned m = MOD) {
-#if !defined(_WIN32) || defined(_WIN64)
+// #if !defined(_WIN32) || defined(_WIN64)
         return unsigned(x % m);
-#endif
-        // Optimized mod for Codeforces 32-bit machines.
-        // x must be less than 2^32 * m for this to work, so that x / m fits in an unsigned 32-bit int.
-        unsigned x_high = unsigned(x >> 32), x_low = unsigned(x);
-        unsigned quot, rem;
-        asm("divl %4\n"
-            : "=a" (quot), "=d" (rem)
-            : "d" (x_high), "a" (x_low), "r" (m));
-        return rem;
+// #endif
+//         // Optimized mod for Codeforces 32-bit machines.
+//         // x must be less than 2^32 * m for this to work, so that x / m fits in an unsigned 32-bit int.
+//         unsigned x_high = unsigned(x >> 32), x_low = unsigned(x);
+//         unsigned quot, rem;
+//         asm("divl %4\n"
+//             : "=a" (quot), "=d" (rem)
+//             : "d" (x_high), "a" (x_low), "r" (m));
+//         return rem;
     }
  
     _mint& operator*=(const _mint &other) {
