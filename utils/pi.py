@@ -1,3 +1,5 @@
+from functools import cache
+
 # Sieve then construct pi(i), prime counting function
 def prime_count(n):
     s = [1 for _ in range(n + 1)]
