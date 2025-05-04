@@ -15,7 +15,7 @@ def combine_divs(d1, d2):
             dset.add(a * b)
     return list(dset)
 
-N = 10**6
+N = 10**8
 # D = get_divs(N // 3 + 1)
 T = 0
 
