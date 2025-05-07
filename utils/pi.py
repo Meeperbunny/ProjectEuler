@@ -1,5 +1,3 @@
-from functools import cache
-
 # Sieve then construct pi(i), prime counting function
 def prime_count(n):
     s = [1 for _ in range(n + 1)]
@@ -31,6 +29,7 @@ def pi(n):
     return D[n]
 
 # Base recurrence for Lucy Hedgehog
+from functools import cache
 @cache
 def S(v, p):
     if p <= 1:
